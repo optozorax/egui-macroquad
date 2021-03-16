@@ -5,9 +5,19 @@ authors = ["ilya sheprut <optozorax@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-emigui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad" }
-macroquad = "0.3.0-alpha.16"
 egui = "0.10.0"
+egui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad" }
+
+# use this if cloning the repo and applying PR 166, e.g.:
+#     git clone https://github.com/not-fl3/macroquad
+#     cd macroquad && gh pr checkout 166
+macroquad = { path = "../macroquad" }
+#
+# use this after PR 166 is accepted:
+# macroquad = { git  = "https://github.com/not-fl3/macroquad" }
+#
+# and this after the next release is published:
+# macroquad = "0.3.0-alpha"
 
 [dev-dependencies]
 egui_demo_lib = "0.10.0"

@@ -1,4 +1,4 @@
-use emigui_miniquad::EguiMq;
+use egui_miniquad::EguiMq;
 use macroquad::prelude::*;
 use miniquad as mq;
 
