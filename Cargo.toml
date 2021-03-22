@@ -6,18 +6,10 @@ edition = "2018"
 
 [dependencies]
 egui = "0.10.0"
-egui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad" }
-
-# use this if cloning the repo and applying PR 166, e.g.:
-#     git clone https://github.com/not-fl3/macroquad
-#     cd macroquad && gh pr checkout 166
-macroquad = { path = "../macroquad" }
-#
-# use this after PR 166 is accepted:
-# macroquad = { git  = "https://github.com/not-fl3/macroquad" }
-#
-# and this after the next release is published:
-# macroquad = "0.3.0-alpha"
+# merge `add-draw-call` and `fix-url-wasm` into `https://github.com/optozorax/egui-miniquad/` and use here.
+# egui-miniquad = { git = "https://github.com/optozorax/egui-miniquad/", branch = "add-draw-call" }
+egui-miniquad = { path = "../egui-miniquad" }
+macroquad = { git = "https://github.com/not-fl3/macroquad", commit = "1257a2b" }
 
 [dev-dependencies]
 egui_demo_lib = "0.10.0"

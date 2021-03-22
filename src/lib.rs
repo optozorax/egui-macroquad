@@ -2,24 +2,55 @@ use egui_miniquad::EguiMq;
 use macroquad::prelude::*;
 use miniquad as mq;
 
-pub struct Egui(EguiMq);
+/// egui bindings for macroquad
+pub struct Egui(EguiMq, usize);
+
+static mut EGUI: Option<Egui> = None;
+
+fn get_egui() -> &'static mut Egui {
+    unsafe {
+        if let Some(egui) = &mut EGUI {
+            egui
+        } else {
+            EGUI = Some(Egui::new());
+            EGUI.as_mut().unwrap()
+        }
+    }
+}
 
 impl Egui {
-    pub fn new() -> Self {
-        Self(EguiMq::new(unsafe { get_internal_gl() }.quad_context))
+    fn new() -> Self {
+        Self(
+            EguiMq::new(unsafe { get_internal_gl() }.quad_context),
+            macroquad::input::utils::register_input_subscriber(),
+        )
     }
 
-    pub fn ui<F: FnOnce(&egui::CtxRef)>(&mut self, f: F) {
-        // Ensure that macroquad's shapes are not goint to be lost
-        let mut gl = unsafe { get_internal_gl() };
-        gl.flush();
-
-        repeat_all_miniquad_input(self);
+    fn ui<F: FnOnce(&egui::CtxRef)>(&mut self, f: F) {
+        let gl = unsafe { get_internal_gl() };
+        macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
 
         self.0.begin_frame(gl.quad_context);
         f(self.0.egui_ctx());
         self.0.end_frame(gl.quad_context);
     }
+
+    fn draw(&mut self) {
+        let mut gl = unsafe { get_internal_gl() };
+        // Ensure that macroquad's shapes are not goint to be lost, and draw them now
+        gl.flush();
+        self.0.draw(&mut gl.quad_context);
+    }
+}
+
+/// Calculates egui ui. Must be called once per frame.
+pub fn ui<F: FnOnce(&egui::CtxRef)>(f: F) {
+    get_egui().ui(f)
+}
+
+/// Draw egui ui. Must be called after `ui` and once per frame.
+pub fn draw() {
+    get_egui().draw()
 }
 
 impl mq::EventHandler for Egui {
