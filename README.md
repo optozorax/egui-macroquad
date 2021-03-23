@@ -2,7 +2,6 @@
 
 [![Latest version](https://img.shields.io/crates/v/egui-macroquad.svg)](https://crates.io/crates/egui-macroquad)
 [![Documentation](https://docs.rs/egui-macroquad/badge.svg)](https://docs.rs/egui-macroquad)
-[![Build Status](https://github.com/optozorax/egui-macroquad/workflows/CI/badge.svg)](https://github.com/optozorax/egui-macroquad/actions?workflow=CI)
 ![MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Apache](https://img.shields.io/badge/license-Apache-blue.svg)
 
