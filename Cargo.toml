@@ -6,17 +6,24 @@ edition = "2018"
 license = "MIT/Apache-2.0"
 homepage = "https://github.com/optozorax/egui-macroquad"
 repository = "https://github.com/optozorax/egui-macroquad"
-description = """
- Bindings between egui and macroquad 
-"""
+description = "Bindings between egui and macroquad"
 readme="README.md"
+categories = ["gui", "game-development"]
+keywords = ["gui", "imgui", "immediate", "portable", "gamedev"]
+include = [
+  "LICENSE-APACHE",
+  "LICENSE-MIT",
+  "**/*.rs",
+  "Cargo.toml",
+]
 
 [dependencies]
 egui = "0.10.0"
-# merge `add-draw-call` and `fix-url-wasm` into `https://github.com/optozorax/egui-miniquad/` and use here.
-# egui-miniquad = { git = "https://github.com/optozorax/egui-miniquad/", branch = "add-draw-call" }
-egui-miniquad = { path = "../egui-miniquad" }
-macroquad = { git = "https://github.com/not-fl3/macroquad", commit = "1257a2b" }
+egui-miniquad = "0.2.0"
+macroquad = "0.3.0-alpha.16"
 
 [dev-dependencies]
 egui_demo_lib = "0.10.0"
+
+[profile.release]
+opt-level = 2 # fast and small wasm
