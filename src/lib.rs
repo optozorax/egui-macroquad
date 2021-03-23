@@ -29,7 +29,7 @@
 //!         
 //!         // Draw things after egui
 //!
-//!         next_frame().await
+//!         next_frame().await;
 //!     }
 //! }
 //! ```

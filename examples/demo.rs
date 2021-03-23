@@ -8,10 +8,17 @@ fn window_conf() -> Conf {
     }
 }
 
+fn draw_primitives() {
+    draw_line(-0.4, 0.4, -0.8, 0.9, 0.05, BLUE);
+    draw_rectangle(-0.1, 0.1, 0.2, 0.2, GREEN);
+    draw_circle(0., 0., 0.1, YELLOW);
+}
+
 #[macroquad::main(window_conf)]
 async fn main() {
     let mut show_egui_demo_windows = false;
     let mut egui_demo_windows = egui_demo_lib::DemoWindows::default();
+    let mut draw_primitives_after_egui = false;
 
     loop {
         clear_background(WHITE);
@@ -23,6 +30,10 @@ async fn main() {
 
             egui::Window::new("egui ❤ macroquad").show(egui_ctx, |ui| {
                 ui.checkbox(&mut show_egui_demo_windows, "Show egui demo windows");
+                ui.checkbox(
+                    &mut draw_primitives_after_egui,
+                    "Draw macroquad primitives after egui",
+                );
             });
         });
 
@@ -31,10 +42,13 @@ async fn main() {
             ..Default::default()
         });
 
-        draw_line(-0.4, 0.4, -0.8, 0.9, 0.05, BLUE);
-        draw_rectangle(-0.1, 0.1, 0.2, 0.2, GREEN);
+        if !draw_primitives_after_egui {
+            draw_primitives();
+        }
         egui_macroquad::draw();
-        draw_circle(0., 0., 0.1, YELLOW);
+        if draw_primitives_after_egui {
+            draw_primitives();
+        }
 
         next_frame().await
     }
