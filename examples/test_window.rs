@@ -1,4 +1,3 @@
-use egui_macroquad::{draw as draw_egui, ui as egui};
 use macroquad::prelude::*;
 
 fn window_conf() -> Conf {
@@ -15,11 +14,9 @@ async fn main() {
     let mut egui_demo_windows = egui_demo_lib::DemoWindows::default();
 
     loop {
-        clear_background(RED);
+        clear_background(WHITE);
 
-        // Render some primitives in camera space
-
-        egui(|egui_ctx| {
+        egui_macroquad::ui(|egui_ctx| {
             if show_egui_demo_windows {
                 egui_demo_windows.ui(egui_ctx);
             }
@@ -33,13 +30,10 @@ async fn main() {
             zoom: vec2(1., screen_width() / screen_height()),
             ..Default::default()
         });
+
         draw_line(-0.4, 0.4, -0.8, 0.9, 0.05, BLUE);
-        draw_rectangle(-0.3, 0.3, 0.2, 0.2, GREEN);
-
-        draw_egui();
-
-        // Render circle after egui
-
+        draw_rectangle(-0.1, 0.1, 0.2, 0.2, GREEN);
+        egui_macroquad::draw();
         draw_circle(0., 0., 0.1, YELLOW);
 
         next_frame().await
