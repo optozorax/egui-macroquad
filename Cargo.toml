@@ -1,8 +1,15 @@
 [package]
 name = "egui-macroquad"
 version = "0.1.0"
-authors = ["ilya sheprut <optozorax@gmail.com>"]
+authors = ["Ilya Sheprut <optozorax@gmail.com>"]
 edition = "2018"
+license = "MIT/Apache-2.0"
+homepage = "https://github.com/optozorax/egui-macroquad"
+repository = "https://github.com/optozorax/egui-macroquad"
+description = """
+ Bindings between egui and macroquad 
+"""
+readme="README.md"
 
 [dependencies]
 egui = "0.10.0"
