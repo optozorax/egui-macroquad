@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>egui in macroquad</title>
+    <style>
+        html,
+        body,
+        canvas {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            background: black;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="glcanvas" tabindex='1'></canvas>
+
+    <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
+    <!-- <script src="https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js"></script> -->
+
+    <script src="gl.js"></script>
+
+    <!-- Plugins: -->
+    <script src="sapp_jsutils.js"></script>
+    <script src="quad-url.js"></script>
+
+    <script>load("demo.wasm");</script> <!-- Your compiled wasm file -->
+</body>
+
+</html>
