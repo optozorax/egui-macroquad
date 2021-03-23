@@ -1,4 +1,4 @@
-//! # [egui](https://github.com/emilk/egui) bindings for [macroquad](https://github.com/not-fl3/macroquad)
+//! # egui bindings for macroquad
 //! 
 //! This is the easiest way to use egui. Just two functions!
 //! 
