@@ -25,9 +25,10 @@ async fn main() {
         // Process keys, mouse etc.
 
         egui_macroquad::ui(|egui_ctx| {
-            egui::Window::new("egui ❤ macroquad").show(egui_ctx, |ui| {
-                ui.label("Test");
-            });
+            egui::Window::new("egui ❤ macroquad")
+                .show(egui_ctx, |ui| {
+                    ui.label("Test");
+                });
         });
 
         // Draw things before egui
