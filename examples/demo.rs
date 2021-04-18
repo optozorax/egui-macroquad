@@ -37,7 +37,7 @@ async fn main() {
             });
         });
 
-        set_camera(Camera2D {
+        set_camera(&Camera2D {
             zoom: vec2(1., screen_width() / screen_height()),
             ..Default::default()
         });

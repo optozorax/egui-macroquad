@@ -1096,6 +1096,8 @@ var importObject = {
             canvas.onkeydown = function (event) {
                 var sapp_key_code = into_sapp_keycode(event.code);
                 switch (sapp_key_code) {
+                    // tab
+                    case 258:
                     //  space, arrows - prevent scrolling of the page
                     case 32: case 262: case 263: case 264: case 265:
                     // F1-F10
