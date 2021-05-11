@@ -8,7 +8,7 @@
 
 "use strict";
 
-const version = "0.1.23";
+const version = "0.1.24";
 
 const canvas = document.querySelector("#glcanvas");
 const gl = canvas.getContext("webgl");
@@ -26,9 +26,14 @@ var high_dpi = false;
 canvas.focus();
 
 canvas.requestPointerLock = canvas.requestPointerLock ||
-    canvas.mozRequestPointerLock;
+    canvas.mozRequestPointerLock ||
+    // pointer lock in any form is not supported on iOS safari 
+    // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#browser_compatibility
+    (function () {});
 document.exitPointerLock = document.exitPointerLock ||
-    document.mozExitPointerLock;
+    document.mozExitPointerLock ||
+    // pointer lock in any form is not supported on iOS safari
+    (function () {});
 
 function assert(flag, message) {
     if (flag == false) {
@@ -1096,14 +1101,14 @@ var importObject = {
             canvas.onkeydown = function (event) {
                 var sapp_key_code = into_sapp_keycode(event.code);
                 switch (sapp_key_code) {
-                    // tab
-                    case 258:
                     //  space, arrows - prevent scrolling of the page
                     case 32: case 262: case 263: case 264: case 265:
                     // F1-F10
                     case 290: case 291: case 292: case 293: case 294: case 295: case 296: case 297: case 298: case 299:
                     // backspace is Back on Firefox/Windows
                     case 259:
+                    // tab - for UI
+                    case 258:
                         event.preventDefault();
                         break;
                 }
@@ -1144,28 +1149,28 @@ var importObject = {
                 event.preventDefault();
 
                 for (const touch of event.changedTouches) {
-                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_BEGAN, touch.identifier, Math.floor(touch.clientX), Math.floor(touch.clientY));
+                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_BEGAN, touch.identifier, Math.floor(touch.clientX) * dpi_scale(), Math.floor(touch.clientY) * dpi_scale());
                 }
             });
             canvas.addEventListener("touchend", function (event) {
                 event.preventDefault();
 
                 for (const touch of event.changedTouches) {
-                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_ENDED, touch.identifier, Math.floor(touch.clientX), Math.floor(touch.clientY));
+                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_ENDED, touch.identifier, Math.floor(touch.clientX) * dpi_scale(), Math.floor(touch.clientY) * dpi_scale());
                 }
             });
             canvas.addEventListener("touchcancel", function (event) {
                 event.preventDefault();
 
                 for (const touch of event.changedTouches) {
-                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_CANCELED, touch.identifier, Math.floor(touch.clientX), Math.floor(touch.clientY));
+                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_CANCELED, touch.identifier, Math.floor(touch.clientX) * dpi_scale(), Math.floor(touch.clientY) * dpi_scale());
                 }
             });
             canvas.addEventListener("touchmove", function (event) {
                 event.preventDefault();
 
                 for (const touch of event.changedTouches) {
-                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_MOVED, touch.identifier, Math.floor(touch.clientX), Math.floor(touch.clientY));
+                    wasm_exports.touch(SAPP_EVENTTYPE_TOUCHES_MOVED, touch.identifier, Math.floor(touch.clientX) * dpi_scale(), Math.floor(touch.clientY) * dpi_scale());
                 }
             });
 
@@ -1310,7 +1315,7 @@ function init_plugins(plugins) {
             var version_func = plugins[i].name + "_crate_version";
 
             if (wasm_exports[version_func] == undefined) {
-                console.error("Plugin " + plugins[i].name + " miss version function: " + version_func + ". Probably invalid crate version.");
+                console.log("Plugin " + plugins[i].name + " is present in JS bundle, but is not used in the rust code.");
             } else {
                 var crate_version = u32_to_semver(wasm_exports[version_func]());
 
