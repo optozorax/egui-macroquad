@@ -8,7 +8,7 @@
 
 "use strict";
 
-const version = "0.1.24";
+const version = "0.1.26";
 
 const canvas = document.querySelector("#glcanvas");
 const gl = canvas.getContext("webgl");
