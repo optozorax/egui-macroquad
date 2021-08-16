@@ -93,6 +93,11 @@ pub fn ui<F: FnOnce(&egui::CtxRef)>(f: F) {
     get_egui().ui(f)
 }
 
+/// Configure egui without beginning or ending a frame.
+pub fn cfg<F: FnOnce(&egui::CtxRef)>(f: F) {
+    f(get_egui().0.egui_ctx());
+}
+
 /// Draw egui ui. Must be called after `ui` and once per frame.
 pub fn draw() {
     get_egui().draw()
