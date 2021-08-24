@@ -1,6 +1,6 @@
 [package]
 name = "egui-macroquad"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["Ilya Sheprut <optozorax@gmail.com>"]
 edition = "2018"
 license = "MIT/Apache-2.0"
@@ -18,12 +18,12 @@ include = [
 ]
 
 [dependencies]
-egui = "0.13.1"
-egui-miniquad = "0.5.0"
+egui = "0.14.0"
+egui-miniquad = "0.6.0"
 macroquad = "0.3.6"
 
 [dev-dependencies]
-egui_demo_lib = "0.13.0"
+egui_demo_lib = "0.14.0"
 
 [profile.release]
-opt-level = 2 # fast and small wasm
+opt-level = 2
