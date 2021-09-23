@@ -47,6 +47,9 @@ use egui_miniquad::EguiMq;
 use macroquad::prelude::*;
 use miniquad as mq;
 
+pub use egui;
+pub use macroquad;
+
 struct Egui(EguiMq, usize);
 
 // Global variable and global functions because it's more like macroquad way
