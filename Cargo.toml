@@ -1,6 +1,6 @@
 [package]
 name = "egui-macroquad"
-version = "0.6.1"
+version = "0.7.0"
 authors = ["Ilya Sheprut <optozorax@gmail.com>"]
 edition = "2018"
 license = "MIT/Apache-2.0"
@@ -18,8 +18,8 @@ include = [
 ]
 
 [dependencies]
-egui = "0.14.0"
-egui-miniquad = "0.6.0"
+egui = "0.15.0"
+egui-miniquad = "0.7.0"
 macroquad = "0.3.6"
 
 [dev-dependencies]
