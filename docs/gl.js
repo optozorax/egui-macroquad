@@ -434,9 +434,11 @@ function into_sapp_mousebutton(btn) {
 function into_sapp_keycode(key_code) {
     switch (key_code) {
         case "Space": return 32;
+        case "Quote": return 39;
         case "Comma": return 44;
         case "Minus": return 45;
         case "Period": return 46;
+        case "Slash": return 47;
         case "Digit0": return 48;
         case "Digit1": return 49;
         case "Digit2": return 50;
@@ -478,6 +480,7 @@ function into_sapp_keycode(key_code) {
         case "BracketLeft": return 91;
         case "Backslash": return 92;
         case "BracketRight": return 93;
+        case "Backquote": return 96;
         case "Escape": return 256;
         case "Enter": return 257;
         case "Tab": return 258;
@@ -534,7 +537,7 @@ function into_sapp_keycode(key_code) {
         case "NumpadDecimal": return 330;
         case "NumpadDivide": return 331;
         case "NumpadMultiply": return 332;
-        case "NumpadSubstract": return 333;
+        case "NumpadSubtract": return 333;
         case "NumpadAdd": return 334;
         case "NumpadEnter": return 335;
         case "NumpadEqual": return 336;
@@ -1109,6 +1112,8 @@ var importObject = {
                     case 259:
                     // tab - for UI
                     case 258:
+                    // quote and slash are Quick Find on Firefox
+                    case 39: case 47:
                         event.preventDefault();
                         break;
                 }
@@ -1124,9 +1129,9 @@ var importObject = {
                     modifiers |= SAPP_MODIFIER_ALT;
                 }
                 wasm_exports.key_down(sapp_key_code, modifiers, event.repeat);
-                // for "space" preventDefault will prevent
+                // for "space", "quote", and "slash" preventDefault will prevent
                 // key_press event, so send it here instead
-                if (sapp_key_code == 32) {
+                if (sapp_key_code == 32 || sapp_key_code == 39 || sapp_key_code == 47) {
                     wasm_exports.key_press(sapp_key_code);
                 }
             };
@@ -1197,7 +1202,7 @@ var importObject = {
                 var pastedData = clipboardData.getData('Text');
 
                 if (pastedData != undefined && pastedData != null && pastedData.length != 0) {
-                    var len = pastedData.length;
+                    var len = (new TextEncoder().encode(pastedData)).length;
                     var msg = wasm_exports.allocate_vec_u8(len);
                     var heap = new Uint8Array(wasm_memory.buffer, msg, len);
                     stringToUTF8(pastedData, heap, 0, len);
