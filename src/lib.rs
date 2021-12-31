@@ -78,9 +78,7 @@ impl Egui {
         let gl = unsafe { get_internal_gl() };
         macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
 
-        self.0.begin_frame(gl.quad_context);
-        f(self.0.egui_ctx());
-        self.0.end_frame(gl.quad_context);
+        self.0.run(gl.quad_context, f);
     }
 
     fn draw(&mut self) {
