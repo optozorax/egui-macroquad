@@ -74,7 +74,7 @@ impl Egui {
         )
     }
 
-    fn ui<F: FnOnce(&egui::CtxRef)>(&mut self, f: F) {
+    fn ui<F: FnOnce(&egui::Context)>(&mut self, f: F) {
         let gl = unsafe { get_internal_gl() };
         macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
 
@@ -90,12 +90,12 @@ impl Egui {
 }
 
 /// Calculates egui ui. Must be called once per frame.
-pub fn ui<F: FnOnce(&egui::CtxRef)>(f: F) {
+pub fn ui<F: FnOnce(&egui::Context)>(f: F) {
     get_egui().ui(f)
 }
 
 /// Configure egui without beginning or ending a frame.
-pub fn cfg<F: FnOnce(&egui::CtxRef)>(f: F) {
+pub fn cfg<F: FnOnce(&egui::Context)>(f: F) {
     f(get_egui().0.egui_ctx());
 }
 

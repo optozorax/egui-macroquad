@@ -18,12 +18,12 @@ include = [
 ]
 
 [dependencies]
-egui = "0.16.0"
-egui-miniquad = "0.8.0"
+egui = "0.17.0"
+egui-miniquad = "0.9.0"
 macroquad = { version = "0.3.6", default-features = false }
 
 [dev-dependencies]
-egui_demo_lib = { version = "0.16.0", default-features = false }
+egui_demo_lib = { version = "0.17.0", default-features = false }
 
 [profile.release]
 opt-level = 2
