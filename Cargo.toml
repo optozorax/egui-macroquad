@@ -14,7 +14,9 @@ include = ["LICENSE-APACHE", "LICENSE-MIT", "**/*.rs", "Cargo.toml"]
 
 [dependencies]
 egui = "0.17.0"
-egui-miniquad = "0.9.0"
+# Temporal fix until macroquad updates its miniquad dep to alpha .46; After that, update
+# egui-miniquad to 0.10.0
+egui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad/", rev = "8f493a03b98faf976374f8aea7d2448ffa4d115c" }
 macroquad = { version = "0.3.15", default-features = false }
 
 [dev-dependencies]
@@ -22,8 +24,3 @@ egui_demo_lib = { version = "0.17.0", default-features = false }
 
 [profile.release]
 opt-level = 2
-
-[patch.crates-io]
-# Temporal fix until macroquad updates its miniquad dep to alpha .46; After that, update
-# egui-miniquad to 0.10.0 and remove this patch
-egui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad/", rev = "8f493a03b98faf976374f8aea7d2448ffa4d115c" }
