@@ -13,10 +13,10 @@ keywords = ["gui", "imgui", "immediate", "portable", "gamedev"]
 include = ["LICENSE-APACHE", "LICENSE-MIT", "**/*.rs", "Cargo.toml"]
 
 [dependencies]
-egui = "0.17.0"
+egui = "0.18.1"
 # Temporal fix until macroquad updates its miniquad dep to alpha .46; After that, update
-# egui-miniquad to 0.10.0
-egui-miniquad = { git = "https://github.com/not-fl3/egui-miniquad/", rev = "8f493a03b98faf976374f8aea7d2448ffa4d115c" }
+# egui-miniquad to 0.11.0
+egui-miniquad = { git = "https://github.com/aleokdev/egui-miniquad" }
 macroquad = { version = "0.3.15", default-features = false }
 
 [dev-dependencies]
