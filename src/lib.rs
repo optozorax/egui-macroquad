@@ -99,11 +99,6 @@ pub fn cfg<F: FnOnce(&egui::Context)>(f: F) {
     f(get_egui().0.egui_ctx());
 }
 
-/// Configure egui miniquad.
-pub fn egui_mq_cfg<F: FnOnce(&'static mut EguiMq)>(f: F) {
-    f(&mut get_egui().0);
-}
-
 /// Draw egui ui. Must be called after `ui` and once per frame.
 pub fn draw() {
     get_egui().draw()
