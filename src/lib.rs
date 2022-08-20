@@ -74,7 +74,7 @@ impl Egui {
         )
     }
 
-    fn ui<F: FnOnce(&egui::Context)>(&mut self, f: F) {
+    fn ui<F: FnOnce(&mut mq::Context, &egui::Context)>(&mut self, f: F) {
         let gl = unsafe { get_internal_gl() };
         macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
 
@@ -91,7 +91,7 @@ impl Egui {
 
 /// Calculates egui ui. Must be called once per frame.
 pub fn ui<F: FnOnce(&egui::Context)>(f: F) {
-    get_egui().ui(f)
+    get_egui().ui(|_, ctx| f(ctx))
 }
 
 /// Configure egui without beginning or ending a frame.
@@ -109,12 +109,12 @@ impl mq::EventHandler for Egui {
 
     fn draw(&mut self, _ctx: &mut mq::Context) {}
 
-    fn mouse_motion_event(&mut self, ctx: &mut mq::Context, x: f32, y: f32) {
-        self.0.mouse_motion_event(ctx, x, y);
+    fn mouse_motion_event(&mut self, _ctx: &mut mq::Context, x: f32, y: f32) {
+        self.0.mouse_motion_event(x, y);
     }
 
-    fn mouse_wheel_event(&mut self, ctx: &mut mq::Context, dx: f32, dy: f32) {
-        self.0.mouse_wheel_event(ctx, dx, dy);
+    fn mouse_wheel_event(&mut self, _ctx: &mut mq::Context, dx: f32, dy: f32) {
+        self.0.mouse_wheel_event(dx, dy);
     }
 
     fn mouse_button_down_event(
