@@ -20,12 +20,16 @@ async fn main() {
     let mut egui_demo_windows = egui_demo_lib::DemoWindows::default();
     let mut draw_primitives_after_egui = false;
 
-    let mut pixels_per_point = 1.0;
+    let mut pixels_per_point: Option<f32> = None;
 
     loop {
         clear_background(WHITE);
 
         egui_macroquad::ui(|egui_ctx| {
+            if pixels_per_point.is_none() {
+                pixels_per_point = Some(egui_ctx.pixels_per_point());
+            }
+
             if show_egui_demo_windows {
                 egui_demo_windows.ui(egui_ctx);
             }
@@ -37,15 +41,16 @@ async fn main() {
                     "Draw macroquad primitives after egui",
                 );
 
-                ui.add(
-                    egui::Slider::new(&mut pixels_per_point, 0.75..=3.0).logarithmic(true)
+                let response = ui.add(
+                    egui::Slider::new(pixels_per_point.as_mut().unwrap(), 0.75..=3.0)
+                        .logarithmic(true),
                 );
-            });
 
-            // Don't change scale while dragging the slider
-            if !egui_ctx.is_using_pointer() {
-                egui_ctx.set_pixels_per_point(pixels_per_point);
-            }
+                // Don't change scale while dragging the slider
+                if response.drag_released() {
+                    egui_ctx.set_pixels_per_point(pixels_per_point.unwrap());
+                }
+            });
         });
 
         set_camera(&Camera2D {
