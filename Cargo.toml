@@ -20,7 +20,10 @@ include = [
 [dependencies]
 egui = "0.19.0"
 egui-miniquad = "0.12.0"
-macroquad = "0.3.24"
+
+[dependencies.macroquad]
+version = "0.3.25"
+default-features = false
 
 [dev-dependencies]
 egui_demo_lib = "0.19.0"
