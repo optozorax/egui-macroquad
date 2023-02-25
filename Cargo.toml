@@ -1,6 +1,6 @@
 [package]
 name = "egui-macroquad"
-version = "0.14.0"
+version = "0.15.0"
 authors = ["Ilya Sheprut <optozorax@gmail.com>"]
 edition = "2021"
 license = "MIT/Apache-2.0"
@@ -20,7 +20,11 @@ include = [
 [dependencies]
 egui = "0.21.0"
 egui-miniquad = "0.14.0"
-macroquad = "0.3.25"
+macroquad = { version="0.3.25", default-features=false }
+
+[features]
+default = ["audio"]
+audio = ["macroquad/audio"]
 
 [dev-dependencies]
 egui_demo_lib = "0.21.0"
