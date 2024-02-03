@@ -110,6 +110,14 @@ pub fn draw() {
     get_egui().draw()
 }
 
+// Intended to be used only if you recreate the window, making the old EGUI instance invalid.
+#[doc(hidden)]
+pub fn reset_egui() {
+    unsafe {
+        EGUI = None;
+    }
+}
+
 impl mq::EventHandler for Egui {
     fn update(&mut self) {}
 
