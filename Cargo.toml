@@ -7,7 +7,7 @@ license = "MIT/Apache-2.0"
 homepage = "https://github.com/optozorax/egui-macroquad"
 repository = "https://github.com/optozorax/egui-macroquad"
 description = "Bindings between egui and macroquad"
-readme="README.md"
+readme = "README.md"
 categories = ["gui", "game-development"]
 keywords = ["gui", "imgui", "immediate", "portable", "gamedev"]
 include = [
@@ -18,16 +18,17 @@ include = [
 ]
 
 [dependencies]
-egui = "0.21.0"
-egui-miniquad = "0.14.0"
-macroquad = { version="0.3.25", default-features=false }
+egui = "0.25.0"
+# use a fork of egui-miniquad that's been updated to support egui 0.25.0 until https://github.com/not-fl3/egui-miniquad/pull/65 is merged
+egui-miniquad = { git = 'https://github.com/caspark/egui-miniquad.git', rev="4fb6d4c4f3c1ed2114c5cf80f8ce967f5301e318" }
+macroquad = { version="0.4.4", default-features=false }
 
 [features]
 default = ["audio"]
 audio = ["macroquad/audio"]
 
 [dev-dependencies]
-egui_demo_lib = "0.21.0"
+egui_demo_lib = "0.25.0"
 
 [profile.release]
 opt-level = 2

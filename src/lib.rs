@@ -29,7 +29,7 @@
 //!         // Draw things before egui
 //!
 //!         egui_macroquad::draw();
-//!         
+//!
 //!         // Draw things after egui
 //!
 //!         next_frame().await;
@@ -50,7 +50,10 @@ use miniquad as mq;
 pub use egui;
 pub use macroquad;
 
-struct Egui(EguiMq, usize);
+struct Egui {
+    egui_mq: EguiMq,
+    input_subscriber_id: usize,
+}
 
 // Global variable and global functions because it's more like macroquad way
 static mut EGUI: Option<Egui> = None;
@@ -68,24 +71,27 @@ fn get_egui() -> &'static mut Egui {
 
 impl Egui {
     fn new() -> Self {
-        Self(
-            EguiMq::new(unsafe { get_internal_gl() }.quad_context),
-            macroquad::input::utils::register_input_subscriber(),
-        )
+        Self {
+            egui_mq: EguiMq::new(unsafe { get_internal_gl() }.quad_context),
+            input_subscriber_id: macroquad::input::utils::register_input_subscriber(),
+        }
     }
 
-    fn ui<F: FnOnce(&mut mq::Context, &egui::Context)>(&mut self, f: F) {
+    fn ui<F>(&mut self, f: F)
+    where
+        F: FnOnce(&mut dyn mq::RenderingBackend, &egui::Context),
+    {
         let gl = unsafe { get_internal_gl() };
-        macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
+        macroquad::input::utils::repeat_all_miniquad_input(self, self.input_subscriber_id);
 
-        self.0.run(gl.quad_context, f);
+        self.egui_mq.run(gl.quad_context, f);
     }
 
     fn draw(&mut self) {
         let mut gl = unsafe { get_internal_gl() };
         // Ensure that macroquad's shapes are not goint to be lost, and draw them now
         gl.flush();
-        self.0.draw(&mut gl.quad_context);
+        self.egui_mq.draw(gl.quad_context);
     }
 }
 
@@ -96,7 +102,7 @@ pub fn ui<F: FnOnce(&egui::Context)>(f: F) {
 
 /// Configure egui without beginning or ending a frame.
 pub fn cfg<F: FnOnce(&egui::Context)>(f: F) {
-    f(get_egui().0.egui_ctx());
+    f(get_egui().egui_mq.egui_ctx());
 }
 
 /// Draw egui ui. Must be called after `ui` and once per frame.
@@ -105,59 +111,35 @@ pub fn draw() {
 }
 
 impl mq::EventHandler for Egui {
-    fn update(&mut self, _ctx: &mut mq::Context) {}
+    fn update(&mut self) {}
 
-    fn draw(&mut self, _ctx: &mut mq::Context) {}
+    fn draw(&mut self) {}
 
-    fn mouse_motion_event(&mut self, _ctx: &mut mq::Context, x: f32, y: f32) {
-        self.0.mouse_motion_event(x, y);
+    fn mouse_motion_event(&mut self, x: f32, y: f32) {
+        self.egui_mq.mouse_motion_event(x, y);
     }
 
-    fn mouse_wheel_event(&mut self, _ctx: &mut mq::Context, dx: f32, dy: f32) {
-        self.0.mouse_wheel_event(dx, dy);
+    fn mouse_wheel_event(&mut self, dx: f32, dy: f32) {
+        self.egui_mq.mouse_wheel_event(dx, dy);
     }
 
-    fn mouse_button_down_event(
-        &mut self,
-        ctx: &mut mq::Context,
-        mb: mq::MouseButton,
-        x: f32,
-        y: f32,
-    ) {
-        self.0.mouse_button_down_event(ctx, mb, x, y);
+    fn mouse_button_down_event(&mut self, mb: mq::MouseButton, x: f32, y: f32) {
+        self.egui_mq.mouse_button_down_event(mb, x, y);
     }
 
-    fn mouse_button_up_event(
-        &mut self,
-        ctx: &mut mq::Context,
-        mb: mq::MouseButton,
-        x: f32,
-        y: f32,
-    ) {
-        self.0.mouse_button_up_event(ctx, mb, x, y);
+    fn mouse_button_up_event(&mut self, mb: mq::MouseButton, x: f32, y: f32) {
+        self.egui_mq.mouse_button_up_event(mb, x, y);
     }
 
-    fn char_event(
-        &mut self,
-        _ctx: &mut mq::Context,
-        character: char,
-        _keymods: mq::KeyMods,
-        _repeat: bool,
-    ) {
-        self.0.char_event(character);
+    fn char_event(&mut self, character: char, _keymods: mq::KeyMods, _repeat: bool) {
+        self.egui_mq.char_event(character);
     }
 
-    fn key_down_event(
-        &mut self,
-        ctx: &mut mq::Context,
-        keycode: mq::KeyCode,
-        keymods: mq::KeyMods,
-        _repeat: bool,
-    ) {
-        self.0.key_down_event(ctx, keycode, keymods);
+    fn key_down_event(&mut self, keycode: mq::KeyCode, keymods: mq::KeyMods, _repeat: bool) {
+        self.egui_mq.key_down_event(keycode, keymods);
     }
 
-    fn key_up_event(&mut self, _ctx: &mut mq::Context, keycode: mq::KeyCode, keymods: mq::KeyMods) {
-        self.0.key_up_event(keycode, keymods);
+    fn key_up_event(&mut self, keycode: mq::KeyCode, keymods: mq::KeyMods) {
+        self.egui_mq.key_up_event(keycode, keymods);
     }
 }
