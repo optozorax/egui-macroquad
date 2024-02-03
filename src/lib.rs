@@ -60,7 +60,7 @@ static mut EGUI: Option<Egui> = None;
 
 fn get_egui() -> &'static mut Egui {
     unsafe {
-        if let Some(egui) = &mut EGUI {
+        if let Some(egui) = EGUI.as_mut() {
             egui
         } else {
             EGUI = Some(Egui::new());
