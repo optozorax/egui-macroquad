@@ -31,3 +31,6 @@ egui_demo_lib = "0.31.1"
 
 [profile.release]
 opt-level = 2
+
+[lints.rust]
+static_mut_refs = { level = "allow" }
