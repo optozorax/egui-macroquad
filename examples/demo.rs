@@ -47,7 +47,7 @@ async fn main() {
                 );
 
                 // Don't change scale while dragging the slider
-                if response.drag_released() {
+                if response.drag_stopped() {
                     egui_ctx.set_pixels_per_point(pixels_per_point.unwrap());
                 }
             });
