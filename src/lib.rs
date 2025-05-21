@@ -128,7 +128,7 @@ impl mq::EventHandler for Egui {
     }
 
     fn mouse_wheel_event(&mut self, dx: f32, dy: f32) {
-        self.egui_mq.mouse_wheel_event(dx, dy);
+        self.egui_mq.mouse_wheel_event(dx / 120., dy / 120.);
     }
 
     fn mouse_button_down_event(&mut self, mb: mq::MouseButton, x: f32, y: f32) {
