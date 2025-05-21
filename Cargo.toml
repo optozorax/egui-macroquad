@@ -25,6 +25,7 @@ macroquad = { version="0.4.14", default-features=false }
 [features]
 default = ["audio"]
 audio = ["macroquad/audio"]
+logs-rs = ["macroquad/log-rs"]
 
 [dev-dependencies]
 egui_demo_lib = "0.31.1"
